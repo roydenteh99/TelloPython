@@ -84,3 +84,21 @@ def scan(drone,waitTimeSec = 5, scanInterval = 0.1):
         timeTaken += scanInterval
         time.sleep(scanInterval)
     return 0
+
+
+drone = Tello ()
+drone.connect()
+
+drone.stream_on()
+
+print("Battery % :" ,drone.get_battery())
+drone.takeoff()
+for i in range(2):
+    drone.move_left(100)
+    scan(drone)
+    drone.move_left(200)
+    scan(drone)
+    drone.move_left(100)
+    drone.rotate_counter_clockwise(90)
+    
+drone.land()
