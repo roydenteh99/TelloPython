@@ -77,13 +77,13 @@ def detect_simple_col_shapes(frame):
         processed_frame = detect_shape(colorAndMask[1], processed_frame ,colorAndMask[0], colorAndMask[2])
     cv2.imshow("ColorShapeDetection",processed_frame)
 
-def scan(drone,waitTimeSec = 5, scanInterval = 0.1): 
+def scan(drone,waitTimeSec = 5, scanInterval = 0.01): 
     timeTaken = 0  
     while (timeTaken < waitTimeSec) :
-        detect_simple_col_shapes(drone.get_frame_read())
+        detect_simple_col_shapes(drone.get_frame_read().frame)
         timeTaken += scanInterval
         time.sleep(scanInterval)
-    return 0
+    
 
 
 drone = Tello ()
