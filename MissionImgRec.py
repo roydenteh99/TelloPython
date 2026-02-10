@@ -83,27 +83,28 @@ def scan(drone,waitTimeSec = 5, scanInterval = 0.01):
         detect_simple_col_shapes(drone.get_frame_read().frame)
         timeTaken += scanInterval
         time.sleep(scanInterval)
-    
-
 
 drone = Tello ()
 drone.connect()
 
-drone.stream_on()
+drone.streamon() #PLEASE CHange this to streamon
 
 print("Battery % :" ,drone.get_battery())
 
 while True :
     detect_simple_col_shapes(drone.get_frame_read().frame)
-    
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        
+        cv2.destroyAllWindows()
+        break
 
-drone.takeoff()
-for i in range(2):
-    drone.move_left(100)
-    scan(drone)
-    drone.move_left(200)
-    scan(drone)
-    drone.move_left(100)
-    drone.rotate_counter_clockwise(90)
+# drone.takeoff()
+# for i in range(2):
+#     drone.move_left(100)
+#     scan(drone)
+#     drone.move_left(200)
+#     scan(drone)
+#     drone.move_left(100)
+#     drone.rotate_counter_clockwise(90)
     
-drone.land()
+# drone.land()
