@@ -92,6 +92,11 @@ drone.connect()
 drone.stream_on()
 
 print("Battery % :" ,drone.get_battery())
+
+while True :
+    detect_simple_col_shapes(drone.get_frame_read().frame)
+    
+
 drone.takeoff()
 for i in range(2):
     drone.move_left(100)
