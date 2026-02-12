@@ -106,8 +106,8 @@ while True:
         print("failed to grab frame")
         break
     # ... inside your processing loop ...
-    # detect_simple_col_shapes(frame)
-    detect_qr_code(frame)
+    detect_simple_col_shapes(frame)
+    #detect_qr_code(frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         cam.release()
