@@ -12,8 +12,13 @@ def scanForPrime(drone):
     print("number detected ",numberDetected)
     if numberDetected == -1 :
         print("no number detected")
+        return 
+    if numberDetected % 2 > 0 :
+        print("Odd Number")
+    else:
+        print('Even number')
     if numberDetected in primeMissionPadNumber:
-        print("prime Number!!")
+        print("Prime Number!!")
         landAndWait(drone)
 
 
@@ -23,6 +28,7 @@ drone.connect() ## this one is to connect the drone
 print("Battery % :" ,drone.get_battery())  
 drone.takeoff()
 
+drone.enable_mission_pads()
 
 ## STEP 1 ### 
 drone.move_right(200)
