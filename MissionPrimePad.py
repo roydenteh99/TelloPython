@@ -7,6 +7,7 @@ def landAndWait(drone):
     drone.takeoff()
 
 def scanForPrime(drone):
+    time.sleep(0.5) #slight pause to stabalise
     primeMissionPadNumber = [2,3,5,7]
     numberDetected = drone.get_mission_pad_id()
     print("number detected ",numberDetected)
