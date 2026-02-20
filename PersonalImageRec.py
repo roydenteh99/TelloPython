@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import threading
+import time
 
 # Define color dictionary: {Name: (Lower, Upper)}
 # Note: Red is handled by combining two masks
@@ -38,7 +40,7 @@ def detect_shape(mask, display_frame, colorName = "Input Color" ,colorRGB = (0,0
 
 
 def get_red_mask(hsv_img):
-    mask1 = cv2.inRange(hsv_img, (0, 200, 100), (10, 255, 255))
+    mask1 = cv2.inRange(hsv_img, (0, 150, 100), (10, 255, 255))
     mask2 = cv2.inRange(hsv_img, (160, 200, 100), (180, 255, 255))
     return cv2.bitwise_or(mask1, mask2)
 
@@ -94,23 +96,30 @@ def detect_qr_code(frame):
     return decoded_info
             
             
+def detection_thread(drone, test = False):
+    cam = cv2.VideoCapture(0)
+    
+    
+    while True :
+        ret, frame = cam.read()
+        if test :
+            cv2.imshow("test",frame)
+        else:
+            detect_simple_col_shapes(frame)
+        
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
+            print(drone)
+            break
+
+cam_thread= threading.Thread(target=detection_thread,args=("drone",False))
+cam_thread.start()
+
+for i in range(1000):
+    print(i)
+    time.sleep(1.0)
 
 
-cam = cv2.VideoCapture(0)
 
-img_counter = 0
 
-while True:
-    ret,frame = cam.read()
-    if not ret:
-        print("failed to grab frame")
-        break
-    # ... inside your processing loop ...
-    detect_simple_col_shapes(frame)
-    #detect_qr_code(frame)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        cam.release()
-        cv2.destroyAllWindows()
-        break
 

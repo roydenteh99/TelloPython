@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 from djitellopy import Tello
+import threading
 
 # Define color dictionary: {Name: (Lower, Upper)}
 # Note: Red is handled by combining two masks
@@ -77,34 +78,46 @@ def detect_simple_col_shapes(frame):
         processed_frame = detect_shape(colorAndMask[1], processed_frame ,colorAndMask[0], colorAndMask[2])
     cv2.imshow("ColorShapeDetection",processed_frame)
 
-def scan(drone,waitTimeSec = 5, scanInterval = 0.01): 
-    timeTaken = 0  
-    while (timeTaken < waitTimeSec) :
-        detect_simple_col_shapes(drone.get_frame_read().frame)
-        timeTaken += scanInterval
-        time.sleep(scanInterval)
+def detection_thread(drone, test = False):
+    drone.streamoff()
+    time.sleep(1)
+    drone.streamon()
+    
+
+    frameReader = drone.get_frame_read()
+
+    try:
+        while True :
+            if test :
+                cv2.imshow("test",frameReader.frame)
+            else:
+                detect_simple_col_shapes(frameReader.frame)
+            
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    finally: 
+            cv2.destroyAllWindows()
+            drone.streamoff()
+
+
+
 
 drone = Tello ()
 drone.connect()
-
-drone.streamon() #PLEASE CHange this to streamon
-
 print("Battery % :" ,drone.get_battery())
-
-while True :
-    detect_simple_col_shapes(drone.get_frame_read().frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        
-        cv2.destroyAllWindows()
-        break
-
-# drone.takeoff()
-# for i in range(2):
-#     drone.move_left(100)
-#     scan(drone)
-#     drone.move_left(200)
-#     scan(drone)
-#     drone.move_left(100)
-#     drone.rotate_counter_clockwise(90)
+cam_thread = threading.Thread (target = detection_thread, args=(drone,) ) ## add true to  the args ie args=(drone,true) for testing of streaming without detection
+cam_thread.start()
+time.sleep(2)
+drone.takeoff()
+drone.set_speed(20)
+for i in range(2):
     
-# drone.land()
+    drone.move_left(100)
+    time.sleep(1)
+    drone.move_left(200)
+    time.sleep(1)
+    drone.move_left(100)
+    drone.rotate_counter_clockwise(90)
+    
+drone.land()
