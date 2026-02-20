@@ -107,7 +107,7 @@ drone = Tello ()
 drone.connect()
 print("Battery % :" ,drone.get_battery())
 cam_thread = threading.Thread (target = detection_thread, args=(drone,) ) ## add true to  the args ie args=(drone,true) for testing of streaming without detection
-cam_thread.start()
+cam_thread.start() # start camera streaming / with or without detection depending on what you put on top
 time.sleep(2)
 drone.takeoff()
 drone.set_speed(20)
