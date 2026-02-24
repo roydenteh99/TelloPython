@@ -109,15 +109,15 @@ print("Battery % :" ,drone.get_battery())
 cam_thread = threading.Thread (target = detection_thread, args=(drone,) ) ## add true to  the args ie args=(drone,true) for testing of streaming without detection
 cam_thread.start() # start camera streaming / with or without detection depending on what you put on top
 time.sleep(2)
-drone.takeoff()
-drone.set_speed(20)
-for i in range(2):
+# drone.takeoff()
+# drone.set_speed(20)
+# for i in range(2):
     
-    drone.move_left(100)
-    time.sleep(1)
-    drone.move_left(200)
-    time.sleep(1)
-    drone.move_left(100)
-    drone.rotate_counter_clockwise(90)
+#     drone.move_left(100)
+#     time.sleep(1)
+#     drone.move_left(200)
+#     time.sleep(1)
+#     drone.move_left(100)
+#     drone.rotate_counter_clockwise(90)
     
-drone.land()
+# drone.land()
