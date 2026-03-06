@@ -14,19 +14,31 @@ def detect_qr_code(frame):
             processedFrame = cv2.putText(processedFrame, s, p[0].astype(int),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
     cv2.imshow("QR",processedFrame)
-    return retval, decoded_info
-
-def scan(drone ,waitTimeSec = 5, scanInterval = 0.1): 
-    timeTaken = 0  
-    while (timeTaken < waitTimeSec) :
-        detected , returnTuple = detect_qr_code(drone.get_frame_read())
-        if detected :
-            return int(returnTuple[0])
-        else:
-            timeTaken += scanInterval
-            time.sleep(scanInterval)
-    return 0
+            
     
+    return decoded_info
+
+def detection_thread(drone, test = False):
+    drone.streamoff()
+    time.sleep(1)
+    drone.streamon()
+    
+
+    frameReader = drone.get_frame_read()
+
+    try:
+        while True :
+            if test :
+                cv2.imshow("test",frameReader.frame)
+            else:
+                detect_qr_code(frameReader.frame)
+            
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    finally: 
+            cv2.destroyAllWindows()
+            drone.streamoff()
 
 
 drone = Tello ()

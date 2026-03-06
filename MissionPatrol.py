@@ -12,7 +12,7 @@ print("Battery % :" ,drone.get_battery()) #this is one to print battery
 # ## MissionPatrol##
 drone.takeoff()
 
-square = 80
+square = 100 ## Unit length increase if length is too short
 ##Example of the 4 direction
 drone.move_right(4 * square) ## Basic Movement (Once again line after ## is for comment so dont get obessed over this)
 drone.move_forward(2 * square) 
