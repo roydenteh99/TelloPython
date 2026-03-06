@@ -1,7 +1,7 @@
 from djitellopy import Tello ## This one is to get from library
 import time
 
-HEIGHT_CLEARANCE = 50
+HEIGHT_CLEARANCE = 50 ## increase this if you hitting the HDB
 
 def landAndWait(drone):
     drone.land()
