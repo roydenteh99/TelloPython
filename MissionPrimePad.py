@@ -4,10 +4,10 @@ import time
 HEIGHT_CLEARANCE = 50 ## increase this if you hitting the HDB
 
 def landAndWait(drone):
-    drone.land()
     numberDetected = drone.get_mission_pad_id()
     drone.go_xyz_speed_mid(0, 0, 30 ,30 ,numberDetected)
-    input("press enter to take off again")
+    drone.land()
+    time.sleep(2)
     drone.takeoff()
     drone.move_up(HEIGHT_CLEARANCE) ## NEW CODE to avoid the tall obstacle
 
